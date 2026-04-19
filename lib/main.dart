@@ -9,12 +9,43 @@ class Curriculo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context){
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("o tal do bagual"),
-        backgroundColor: Color(0xFF78a388),
+    return MaterialApp (
+      home: Scaffold(
+
+
+        body: Container(
+          color: Color(0xfff3f9d2),
+          child: Column(
+            children: [
+              Image.asset("assets/images/house.jpg"),
+              Row(
+                children: [
+                  Text("teste c1"),
+                  Text("teste c2"),
+                  Text("teste c3"),
+                ],
+              ),
+            ],
+          ),
+        ),
+
+
+        bottomNavigationBar: NavigationBar(
+          backgroundColor: Color(0xffcbeaa6),
+          indicatorColor: Color(0xffc0d684),
+          selectedIndex: 1,
+          destinations: [
+            NavigationDestination(icon: Icon(Icons.explore), label: "explore"),
+            NavigationDestination(icon: Icon(Icons.explore), label: "exploree"),
+            NavigationDestination(icon: Icon(Icons.explore), label: "exploreee"),
+          ],
+        )
+
+
       )
-    )
+    );
   }
 
 }
+
+//["#f3f9d2","#cbeaa6","#c0d684"]

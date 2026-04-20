@@ -17,7 +17,12 @@ class Curriculo extends StatelessWidget {
           color: Color(0xfff3f9d2),
           child: Column(
             children: [
-              Image.asset("assets/images/house.jpg"),
+              SizedBox(height: 40),
+              Expanded(
+                child: Image.asset("assets/images/house.jpg", fit: BoxFit.scaleDown),
+              ),
+              Text("Augusto Massotti\n pai da computação"),
+              SizedBox(height: 30),
               Row(
                 children: [
                   Text("teste c1"),

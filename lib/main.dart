@@ -15,7 +15,7 @@ class _CurriculoState extends State<Curriculo> {
   final List<Widget> _pages = [
     HomePage(),
     Center(child: Experiencia()),
-    Center(child: Text("Projetos")),
+    Center(child: Projetos()),
     Center(child: Text("Contato")),
   ];
 
@@ -113,7 +113,20 @@ class _ExpState extends State<Experiencia> {
       ]
     );
   }
+}
 
+
+class Projetos extends StatefulWidget {
+  @override
+  _ProjState createState() => _ProjState();
+}
+
+
+class _ProjState extends State<Projetos> {
+  @override
+  Widget build(BuildContext context){
+    return Text("teste proj");
+  }
 }
 
 

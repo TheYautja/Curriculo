@@ -4,98 +4,150 @@ void main() {
   runApp(Curriculo());
 }
 
+class Curriculo extends StatefulWidget {
+  @override
+  _CurriculoState createState() => _CurriculoState();
+}
 
-class Curriculo extends StatelessWidget {
+class _CurriculoState extends State<Curriculo> {
+  int currentIndex = 0;
+
+  final List<Widget> _pages = [
+    HomePage(),
+    Center(child: Experiencia()),
+    Center(child: Text("Projetos")),
+    Center(child: Text("Contato")),
+  ];
 
   @override
-  Widget build(BuildContext context){
-    return MaterialApp (
+  Widget build(BuildContext context) {
+    return MaterialApp(
       home: Scaffold(
-
-
-        body: Container(
-          color: Color(0xfff6f5f4),
-          child: Column(
-            children: [
-              SizedBox(height: 40),
-              Expanded(
-                child: Image.asset("assets/images/house.jpg", fit: BoxFit.scaleDown),
-              ),
-              Text("Augusto Massotti\n Pai da computação"),
-              SizedBox(height: 30),
-              Row(
-                children: [
-                  SizedBox(width: 30),
-                  ReviewCard("Linus Torvalds:", "Na verdade, copiei o kernel do linux do salsicha", 300, 200, Color(0xffcbeaa6), Color(0xffc0d684)),
-                  ReviewCard("Rainha Elizabeth:\n(antes de morrer)", "O CARA", 300, 200, Color(0xffcbeaa6), Color(0xffc0d684)),
-                  ReviewCard("Sam Altmann:", "\"treinei o GPT no git do salsicha\"", 300, 200, Color(0xffcbeaa6), Color(0xffc0d684)),
-                  ReviewCard("ChatGPT:", "beep boop", 300, 200, Color(0xffcbeaa6), Color(0xffc0d684)),
-                  SizedBox(width: 30),
-                ],
-              ),
-              SizedBox(height: 20),
-            ],
-          ),
-        ),
-
+        body: _pages[currentIndex],
 
         bottomNavigationBar: NavigationBar(
           backgroundColor: Color(0xffcbeaa6),
           indicatorColor: Color(0xffc0d684),
-          selectedIndex: 1,
-          destinations: [
-            NavigationDestination(icon: Icon(Icons.explore), label: "Experiência"),
-            NavigationDestination(icon: Icon(Icons.explore), label: "Projetos"),
-            NavigationDestination(icon: Icon(Icons.explore), label: "Contato"),
+          selectedIndex: currentIndex,
+          onDestinationSelected: (index) {
+            setState(() {
+              currentIndex = index;
+            });
+          },
+          destinations: const [
+            NavigationDestination(icon: Icon(Icons.home), label: "Início"),
+            NavigationDestination(icon: Icon(Icons.article_sharp), label: "Experiência"),
+            NavigationDestination(icon: Icon(Icons.hardware), label: "Projetos"),
+            NavigationDestination(icon: Icon(Icons.contact_page), label: "Contato"),
           ],
-        )
-
-
-      )
+        ),
+      ),
     );
   }
+}
 
+class HomePage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      color: Color(0xfff6f5f4),
+      child: Column(
+        children: [
+          SizedBox(height: 40),
+
+          Expanded(
+            child: Image.asset("assets/images/house.jpg", fit: BoxFit.scaleDown),
+          ),
+
+          Text("Augusto Massotti\nPai da computação", textAlign: TextAlign.center),
+          SizedBox(height: 30),
+          SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              children: [
+                SizedBox(width: 30),
+                TextCard("Linus Torvalds:", "Na verdade, copiei o kernel do linux do salsicha", 300, 200, Color(0xffcbeaa6), Color(0xffc0d684)),
+                TextCard("Alan Turing:\n(antes de morrer)", "Tudo que eu sei, devo ao Augusto", 300, 200, Color(0xffcbeaa6), Color(0xffc0d684)),
+                TextCard("Sam Altmann:", "\"treinei o GPT no git do salsicha\"", 300, 200, Color(0xffcbeaa6), Color(0xffc0d684)),
+                TextCard("ChatGPT:", "beep boop", 300, 200, Color(0xffcbeaa6), Color(0xffc0d684)),
+                SizedBox(width: 30),
+              ],
+            ),
+          ),
+          SizedBox(height: 20),
+        ],
+      ),
+    );
+  }
 }
 
 
-class ReviewCard extends StatelessWidget {
+class Experiencia extends StatefulWidget {
+  @override
+  _ExpState createState() => _ExpState();
+}
 
-  double width;
-  double height;
-  String owner;
-  String review;
-  Color backgroundColor;
-  Color detailColor;
 
-  ReviewCard(this.owner, this.review, this.width, this.height, this.backgroundColor, this.detailColor);
+class _ExpState extends State<Experiencia> {
 
   @override
   Widget build(BuildContext context){
-    return Expanded( //expanding card, see if changes w more
-      child: Card(
-        color: this.backgroundColor,
-        elevation: 2,
-        shadowColor: detailColor,
-        clipBehavior: Clip.hardEdge,
-        child: SizedBox(
-          width: this.width,
-          height: this.height,
-          child: Center(
-            child:Column(
-              children: [
-                Text(this.owner),
-                Text(this.review),
-              ],
-            )
-          )
+    return Row(
+      children: [
+        Column(
+          children: [
+            TextCard("Linus Torvalds:", "Na verdade, copiei o kernel do linux do salsicha", 300, 200, Color(0xffcbeaa6), Color(0xffc0d684)),
+            TextCard("Alan Turing:\n(antes de morrer)", "Tudo que eu sei, devo ao Augusto", 300, 200, Color(0xffcbeaa6), Color(0xffc0d684)),
+            TextCard("Sam Altmann:", "\"treinei o GPT no git do salsicha\"", 300, 200, Color(0xffcbeaa6), Color(0xffc0d684)),
+            TextCard("ChatGPT:", "beep boop", 300, 200, Color(0xffcbeaa6), Color(0xffc0d684)),
+          ]
+        ),
+        Column(
+          children: [
+            TextCard("Linus Torvalds:", "Na verdade, copiei o kernel do linux do salsicha", 300, 200, Color(0xffcbeaa6), Color(0xffc0d684)),
+            TextCard("Alan Turing:\n(antes de morrer)", "Tudo que eu sei, devo ao Augusto", 300, 200, Color(0xffcbeaa6), Color(0xffc0d684)),
+            TextCard("Sam Altmann:", "\"treinei o GPT no git do salsicha\"", 300, 200, Color(0xffcbeaa6), Color(0xffc0d684)),
+            TextCard("ChatGPT:", "beep boop", 300, 200, Color(0xffcbeaa6), Color(0xffc0d684)),
+          ]
+        ),
+      ]
+    );
+  }
+
+}
+
+
+class TextCard extends StatelessWidget {
+  final double width;
+  final double height;
+  final String title;
+  final String subtitle;
+  final Color backgroundColor;
+  final Color detailColor;
+
+  TextCard(this.title, this.subtitle, this.width, this.height, this.backgroundColor, this.detailColor);
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      color: backgroundColor,
+      elevation: 2,
+      shadowColor: detailColor,
+      clipBehavior: Clip.hardEdge,
+      child: SizedBox(
+        width: width,
+        height: height,
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(title, textAlign: TextAlign.center),
+              SizedBox(height: 10),
+              Text(subtitle, textAlign: TextAlign.center),
+            ],
+          ),
         ),
       ),
-      //fit: BoxFit.scaleDown, //wrong place
     );
   }
 }
-
-//["#f6f5f4","#cbeaa6","#c0d684"]
-
-
-

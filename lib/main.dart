@@ -14,28 +14,42 @@ class _CurriculoState extends State<Curriculo> {
   int currentIndex = 0;
 
   final List<ExperienceModel> experiences = [
-    ExperienceModel("Empresa", "Dev (2024 - atual)"),
-    ExperienceModel("Empresa", "Dev (2023)"),
+    ExperienceModel("Governo Americano", "cientista da computacao\n1968 - 1980\n Criei a world wide web(sozinho)"),
+    ExperienceModel("posto shell", "filosofo\n1930 - 1999\n criei o conceito de maquinas de turing"),
   ];
 
   final List<ProjectModel> projects = [
-    ProjectModel("App", "em", "assets/images/house.jpg"),
-    ProjectModel("App", "em", "assets/images/house.jpg"),
+    ProjectModel("Rigel", "Emulador de Chip8", "assets/images/chip8print.png"),
+    ProjectModel("Valinor", "linguagem de programação interpretada", "assets/images/house.jpg"),
+    ProjectModel("Gondolin", "Sistema operacional", "assets/images/house.jpg"),
+    ProjectModel("Poppy", "Emulador de terminal", "assets/images/poppyprint.png"),
   ];
+
+  void addExperience(ExperienceModel exp) {
+    setState(() {
+      experiences.add(exp);
+    });
+  }
+
+  void addProject(ProjectModel proj) {
+    setState(() {
+      projects.add(proj);
+    });
+  }
 
   late final List<Widget> _pages = [
     HomePage(),
-    Experiencia(experiences),
-    Projetos(projects),
-    Center(child: Text("Contato")),
+    Experiencia(experiences, addExperience),
+    Projetos(projects, addProject),
+    Contato(),
   ];
 
   @override
   Widget build(BuildContext context){
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: Scaffold(
-
-        body: _pages[currentIndex],
+        body: SafeArea(child: _pages[currentIndex]),
 
         bottomNavigationBar: NavigationBar(
           backgroundColor: Color(0xffcbeaa6),
@@ -58,7 +72,6 @@ class _CurriculoState extends State<Curriculo> {
   }
 }
 
-
 class ExperienceModel {
   final String title;
   final String description;
@@ -74,87 +87,196 @@ class ProjectModel {
   ProjectModel(this.title, this.description, this.imagePath);
 }
 
+class PageWrapper extends StatelessWidget {
 
-class HomePage extends StatelessWidget {
+  final Widget child;
+
+  PageWrapper(this.child);
+
   @override
   Widget build(BuildContext context){
     return Container(
       color: Color(0xfff6f5f4),
-      child: Column(
-        children: [
-          SizedBox(height: 40),
-
-          Expanded(
-            child: Image.asset("assets/images/house.jpg", fit: BoxFit.scaleDown),
+      child: Center(
+        child: ConstrainedBox(
+          constraints: BoxConstraints(maxWidth: 1000),
+          child: Padding(
+            padding: EdgeInsets.all(24),
+            child: child,
           ),
+        ),
+      ),
+    );
+  }
+}
 
-          Text("Augusto Massotti\nPai da computação", textAlign: TextAlign.center),
-          SizedBox(height: 30),
+class HomePage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context){
+    return PageWrapper(
+      SingleChildScrollView(
+        child: Column(
+          children: [
 
-          SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: Row(
+            SizedBox(
+              height: 250,
+              child: Image.asset("assets/images/house.jpg", fit: BoxFit.contain),
+            ),
+
+            Text(
+              "Augusto Dalla Costa Massotti",
+              style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold),
+            ),
+
+            SizedBox(height: 10),
+
+            Text("C - C++ - BaSH - Linux"),
+
+            SizedBox(height: 30),
+
+            Wrap(
+              alignment: WrapAlignment.center,
+              spacing: 20,
+              runSpacing: 20,
               children: [
-                SizedBox(width: 30),
-                TextCard("Sobre mim", "aeknvfaasdadasd", 300, 200, Color(0xffcbeaa6), Color(0xffc0d684)),
-                SizedBox(width: 30),
+                TextCard("Sobre mim", "Aluno do IFC campus Concórdia, interessado em low-level", 300, 180, Color(0xffcbeaa6), Color(0xffc0d684)),
+                TextCard("Objetivo", "fazer o minimo pra viver", 300, 180, Color(0xffcbeaa6), Color(0xffc0d684)),
+                TextCard("Competências", "bem poucas, mas nao uso gpt pra codar", 300, 180, Color(0xffcbeaa6), Color(0xffc0d684)),
               ],
             ),
+
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class Experiencia extends StatelessWidget {
+
+  final List<ExperienceModel> experiences;
+  final Function(ExperienceModel) onAdd;
+
+  Experiencia(this.experiences, this.onAdd);
+
+  @override
+  Widget build(BuildContext context){
+    return PageWrapper(
+      Column(
+        children: [
+
+          ElevatedButton(
+            onPressed: () async {
+              final result = await Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => AddExperiencePage()),
+              );
+
+              if (result != null) {
+                onAdd(result);
+              }
+            },
+            child: Text("Adicionar Experiência"),
           ),
 
           SizedBox(height: 20),
+
+          Expanded(
+            child: GridView.builder(
+              gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+                maxCrossAxisExtent: 400,
+                crossAxisSpacing: 20,
+                mainAxisSpacing: 20,
+                childAspectRatio: 1.2,
+              ),
+              itemCount: experiences.length,
+              itemBuilder: (context, index){
+                final exp = experiences[index];
+                return TextCard(exp.title, exp.description, double.infinity, double.infinity, Color(0xffcbeaa6), Color(0xffc0d684));
+              },
+            ),
+          ),
         ],
       ),
     );
   }
 }
 
-
-class Experiencia extends StatelessWidget {
-
-  final List<ExperienceModel> experiences;
-
-  Experiencia(this.experiences);
-
-  @override
-  Widget build(BuildContext context){
-    return SingleChildScrollView(
-      scrollDirection: Axis.horizontal,
-      child: Row(
-        children: experiences.map((exp){
-          return Padding(
-            padding: EdgeInsets.all(16),
-            child: TextCard(exp.title, exp.description, 300, 200, Color(0xffcbeaa6), Color(0xffc0d684)),
-          );
-        }).toList(),
-      )
-    );
-  }
-}
-
-
 class Projetos extends StatelessWidget {
 
   final List<ProjectModel> projects;
+  final Function(ProjectModel) onAdd;
 
-  Projetos(this.projects);
+  Projetos(this.projects, this.onAdd);
 
   @override
   Widget build(BuildContext context){
-    return SingleChildScrollView(
-      scrollDirection: Axis.horizontal,
-      child: Row(
-        children: projects.map((proj){
-          return Padding(
-            padding: EdgeInsets.all(16),
-            child: ProjCard(proj.title, proj.description, 200, 200, proj.imagePath, Color(0xffcbeaa6), Color(0xffc0d684)),
-          );
-        }).toList(),
-      )
+    return PageWrapper(
+      Column(
+        children: [
+
+          ElevatedButton(
+            onPressed: () async {
+              final result = await Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => AddProjectPage()),
+              );
+
+              if (result != null) {
+                onAdd(result);
+              }
+            },
+            child: Text("Adicionar Projeto"),
+          ),
+
+          SizedBox(height: 20),
+
+          Expanded(
+            child: GridView.builder(
+              gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+                maxCrossAxisExtent: 400,
+                crossAxisSpacing: 20,
+                mainAxisSpacing: 20,
+                childAspectRatio: 1,
+              ),
+              itemCount: projects.length,
+              itemBuilder: (context, index){
+                final proj = projects[index];
+                return ProjCard(proj.title, proj.description, double.infinity, double.infinity, proj.imagePath, Color(0xffcbeaa6), Color(0xffc0d684));
+              },
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
 
+class Contato extends StatelessWidget {
+  @override
+  Widget build(BuildContext context){
+    return PageWrapper(
+      SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+
+            Text("Contato", style: TextStyle(fontSize: 24)),
+
+            SizedBox(height: 30),
+
+            TextCard("Email", "am.96138669@gmail.com", 400, 100, Color(0xffcbeaa6), Color(0xffc0d684)),
+            SizedBox(height: 10),
+            TextCard("GitHub", "github.com/TheYautja", 400, 100, Color(0xffcbeaa6), Color(0xffc0d684)),
+            SizedBox(height: 10),
+            TextCard("ZipZop", "(49) 9800-8934", 400, 100, Color(0xffcbeaa6), Color(0xffc0d684)),
+
+          ],
+        ),
+      ),
+    );
+  }
+}
 
 class TextCard extends StatelessWidget {
 
@@ -173,15 +295,15 @@ class TextCard extends StatelessWidget {
       color: backgroundColor,
       elevation: 2,
       shadowColor: detailColor,
-      clipBehavior: Clip.hardEdge,
-      child: SizedBox(
+      child: Container(
         width: width,
         height: height,
+        padding: EdgeInsets.all(16),
         child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text(title, textAlign: TextAlign.center),
+              Text(title, textAlign: TextAlign.center, style: TextStyle(fontWeight: FontWeight.bold)),
               SizedBox(height: 10),
               Text(subtitle, textAlign: TextAlign.center),
             ],
@@ -191,7 +313,6 @@ class TextCard extends StatelessWidget {
     );
   }
 }
-
 
 class ProjCard extends StatelessWidget {
 
@@ -211,22 +332,139 @@ class ProjCard extends StatelessWidget {
       color: backgroundColor,
       elevation: 2,
       clipBehavior: Clip.hardEdge,
-      child: SizedBox(
-        width: width,
-        height: height,
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              SizedBox(height: 10),
-              Image.asset(imgPath, fit: BoxFit.scaleDown),
-              Text(title),
-              Text(subtitle),
-            ],
-          )
-        )
-      )
+      child: Column(
+        children: [
+
+          Expanded(
+            child: Image.asset(
+              imgPath,
+              width: double.infinity,
+              fit: BoxFit.cover,
+            ),
+          ),
+
+          Padding(
+            padding: EdgeInsets.all(10),
+            child: Column(
+              children: [
+                Text(title, style: TextStyle(fontWeight: FontWeight.bold)),
+                SizedBox(height: 5),
+                Text(subtitle, textAlign: TextAlign.center),
+              ],
+            ),
+          ),
+
+        ],
+      ),
     );
   }
+}
 
+class AddExperiencePage extends StatefulWidget {
+  @override
+  _AddExperiencePageState createState() => _AddExperiencePageState();
+}
+
+class _AddExperiencePageState extends State<AddExperiencePage> {
+
+  final titleController = TextEditingController();
+  final descController = TextEditingController();
+
+  @override
+  Widget build(BuildContext context){
+    return Scaffold(
+      appBar: AppBar(title: Text("Nova Experiência")),
+      body: Padding(
+        padding: EdgeInsets.all(20),
+        child: Column(
+          children: [
+
+            TextField(
+              controller: titleController,
+              decoration: InputDecoration(labelText: "Título"),
+            ),
+
+            TextField(
+              controller: descController,
+              decoration: InputDecoration(labelText: "Descrição"),
+            ),
+
+            SizedBox(height: 20),
+
+            ElevatedButton(
+              onPressed: (){
+                Navigator.pop(
+                  context,
+                  ExperienceModel(
+                    titleController.text,
+                    descController.text,
+                  ),
+                );
+              },
+              child: Text("Salvar"),
+            )
+
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class AddProjectPage extends StatefulWidget {
+  @override
+  _AddProjectPageState createState() => _AddProjectPageState();
+}
+
+class _AddProjectPageState extends State<AddProjectPage> {
+
+  final titleController = TextEditingController();
+  final descController = TextEditingController();
+  final imgController = TextEditingController();
+
+  @override
+  Widget build(BuildContext context){
+    return Scaffold(
+      appBar: AppBar(title: Text("Novo Projeto")),
+      body: Padding(
+        padding: EdgeInsets.all(20),
+        child: Column(
+          children: [
+
+            TextField(
+              controller: titleController,
+              decoration: InputDecoration(labelText: "Título"),
+            ),
+
+            TextField(
+              controller: descController,
+              decoration: InputDecoration(labelText: "Descrição"),
+            ),
+
+            TextField(
+              controller: imgController,
+              decoration: InputDecoration(labelText: "Caminho da imagem"),
+            ),
+
+            SizedBox(height: 20),
+
+            ElevatedButton(
+              onPressed: (){
+                Navigator.pop(
+                  context,
+                  ProjectModel(
+                    titleController.text,
+                    descController.text,
+                    imgController.text,
+                  ),
+                );
+              },
+              child: Text("Salvar"),
+            )
+
+          ],
+        ),
+      ),
+    );
+  }
 }

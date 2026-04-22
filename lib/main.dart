@@ -15,13 +15,13 @@ class _CurriculoState extends State<Curriculo> {
 
   final List<ExperienceModel> experiences = [
     ExperienceModel("Governo Americano", "cientista da computacao\n1968 - 1980\n Criei a world wide web(sozinho)"),
-    ExperienceModel("posto shell", "filosofo\n1930 - 1999\n criei o conceito de maquinas de turing"),
+    ExperienceModel("IFC - câmpus Concórdia", "Aluno\n2023 - 2026?\n estudei"),
   ];
 
   final List<ProjectModel> projects = [
     ProjectModel("Rigel", "Emulador de Chip8", "assets/images/chip8print.png"),
-    ProjectModel("Valinor", "linguagem de programação interpretada", "assets/images/house.jpg"),
-    ProjectModel("Gondolin", "Sistema operacional", "assets/images/house.jpg"),
+    ProjectModel("Valinor", "Linguagem de programação interpretada", "assets/images/house.jpg"),
+    ProjectModel("Gondolin", "Kernel em C", "assets/images/house.jpg"),
     ProjectModel("Poppy", "Emulador de terminal", "assets/images/poppyprint.png"),
   ];
 
@@ -120,7 +120,7 @@ class HomePage extends StatelessWidget {
 
             SizedBox(
               height: 250,
-              child: Image.asset("assets/images/house.jpg", fit: BoxFit.contain),
+              child: Image.asset("assets/images/pomba.png", fit: BoxFit.contain),
             ),
 
             Text(
@@ -130,7 +130,7 @@ class HomePage extends StatelessWidget {
 
             SizedBox(height: 10),
 
-            Text("C - C++ - BaSH - Linux"),
+            Text("C - C++ - bash"),
 
             SizedBox(height: 30),
 
@@ -140,8 +140,8 @@ class HomePage extends StatelessWidget {
               runSpacing: 20,
               children: [
                 TextCard("Sobre mim", "Aluno do IFC campus Concórdia, interessado em low-level", 300, 180, Color(0xffcbeaa6), Color(0xffc0d684)),
-                TextCard("Objetivo", "fazer o minimo pra viver", 300, 180, Color(0xffcbeaa6), Color(0xffc0d684)),
-                TextCard("Competências", "bem poucas, mas nao uso gpt pra codar", 300, 180, Color(0xffcbeaa6), Color(0xffc0d684)),
+                TextCard("Objetivo", "Ir bem no ENEM", 300, 180, Color(0xffcbeaa6), Color(0xffc0d684)),
+                TextCard("Competências", "Virtualmente nenhuma", 300, 180, Color(0xffcbeaa6), Color(0xffc0d684)),
               ],
             ),
 
@@ -176,7 +176,7 @@ class Experiencia extends StatelessWidget {
                 onAdd(result);
               }
             },
-            child: Text("Adicionar Experiência"),
+            child: Text("Add Experiência"),
           ),
 
           SizedBox(height: 20),
@@ -226,7 +226,7 @@ class Projetos extends StatelessWidget {
                 onAdd(result);
               }
             },
-            child: Text("Adicionar Projeto"),
+            child: Text("Add Projeto"),
           ),
 
           SizedBox(height: 20),

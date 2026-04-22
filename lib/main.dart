@@ -21,7 +21,7 @@ class _CurriculoState extends State<Curriculo> {
   final List<ProjectModel> projects = [
     ProjectModel("Rigel", "Emulador de Chip8", "assets/images/chip8print.png"),
     ProjectModel("Valinor", "Linguagem de programação interpretada", "assets/images/house.jpg"),
-    ProjectModel("Gondolin", "Kernel em C", "assets/images/house.jpg"),
+    ProjectModel("Gondolin", "Kernel em C", "assets/images/kernel.jpg"),
     ProjectModel("Poppy", "Emulador de terminal", "assets/images/poppyprint.png"),
   ];
 
